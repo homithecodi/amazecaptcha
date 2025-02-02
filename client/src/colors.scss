@@ -1,0 +1,18 @@
+// Color Variables
+$color-primary: rgb(0, 130, 230);
+$color-player: rgb(0, 220, 0);
+$color-goal: rgb(255, 0, 0);
+$light-background-color: #ffffff;
+$light-text-color: #000000;
+$dark-background-color: #121212;
+$dark-text-color: #ffffff;
+
+// @mixin light_theme {
+//   background: $light-background-color;
+//   color: $light-text-color;
+// }
+
+@mixin dark_theme {
+  background: $dark-background-color;
+  color: $dark-text-color;
+}

@@ -1,0 +1,43 @@
+@import "../colors.scss";
+
+.accessibilityBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 2rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+  font-family: inherit;
+  background: white;
+  border: 4px $color-primary solid;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background: $color-primary;
+    border: 4px transparent solid;
+    color: white;
+  }
+
+  // Icon Styling
+  &:hover > svg {
+    fill: white !important;
+  }
+
+  &_text {
+    flex: 3;
+    text-align: left;
+    margin-left: 2rem;
+  }
+
+  @media screen and (max-width: 600px) {
+    width: min-content;
+    padding: 1rem;
+    margin: 0 0.5rem;
+
+    &_text {
+      display: none;
+    }
+  }
+}

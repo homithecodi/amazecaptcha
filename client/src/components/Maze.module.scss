@@ -1,0 +1,67 @@
+@import "../colors.scss";
+
+:root {
+  --maze-size: 10; // Default maze size, Adjust this dynamically in JavaScript
+  --cell-size: 2rem;
+
+  @media screen and (max-width: 600px) {
+    --cell-size: 1.5rem;
+  }
+}
+
+.maze_container {
+  display: grid;
+  // align-items: center;
+  grid-template-columns: repeat(
+    var(--maze-size),
+    var(--cell-size)
+  ); // Adjust the number of columns based on maze size
+  width: fit-content; // Ensure the width is only as wide as the maze
+  border: 4px solid $color-primary;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 0 20px transparent;
+  // transition: all 0.5s ease-in-out;
+
+  &.pulse {
+    animation: pulseEffect forwards ease-in-out;
+    // box-shadow: 0 0 15px blue;
+    // animation: pulseEffect 1s forwards ease-in-out;
+    // animation-name: pulseEffect;
+    // animation-timing-function: ease-in-out;
+    // animation-fill-mode: forwards;
+  }
+}
+
+.maze_cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background-color: white;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  border-radius: 4px;
+  &_wall {
+    border-radius: 4px;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    // background-color: $color-primary;
+    background: linear-gradient(
+      to top left,
+      $color-primary,
+      lighten($color-primary, 20%)
+    );
+  }
+}
+
+@keyframes pulseEffect {
+  0% {
+    box-shadow: 0 0 20px transparent;
+  }
+  50% {
+    box-shadow: 0 0 20px $color-primary;
+  }
+  100% {
+    box-shadow: 0 0 20px transparent;
+  }
+}

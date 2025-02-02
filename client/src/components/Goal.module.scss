@@ -1,0 +1,31 @@
+@import "../colors.scss";
+
+.goal {
+  position: absolute;
+  width: 1.8rem;
+  height: 1.8rem;
+  // background: radial-gradient($color-goal 10%, white);
+  background: $color-goal;
+  border-radius: 50%;
+  animation: pulse 1s infinite ease-out;
+
+  @media screen and (max-width: 600px) {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    // opacity: 0.5;
+    box-shadow: 0 0 0px $color-goal;
+  }
+  70% {
+    // opacity: 1;
+    box-shadow: 0 0 8px $color-goal;
+  }
+  100% {
+    // opacity: 0.5;
+    box-shadow: 0 0 0px $color-goal;
+  }
+}

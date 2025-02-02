@@ -1,0 +1,15 @@
+@import "../colors.scss";
+
+.player {
+  position: absolute;
+  width: 1.8rem;
+  height: 1.8rem;
+  background: radial-gradient($color-player 20%, green);
+  border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+
+  @media screen and (max-width: 600px) {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+}

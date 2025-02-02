@@ -1,0 +1,72 @@
+@import "../colors.scss";
+
+.results {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  color: white;
+  background: radial-gradient($color-primary, lighten($color-primary, 20%));
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+  opacity: 1;
+
+  &.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.header {
+  font-size: 2.5rem;
+}
+
+.table {
+  background: white;
+  display: grid;
+  grid-template-columns: repeat(2, 18rem);
+  gap: 4px;
+  font-size: 2rem;
+  border-radius: 8px;
+  border: 4px solid white;
+  margin: 2rem;
+  cursor: default;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 1rem 2rem;
+  background: $color-primary;
+  border-radius: 8px;
+  text-transform: capitalize;
+
+  &:nth-child(odd) {
+    justify-content: flex-start;
+    background: rgb(214, 214, 214);
+    color: $color-primary;
+  }
+}
+
+.btn {
+  width: 12rem;
+  background: white;
+  margin: 1rem 0;
+  color: $color-primary;
+  font-family: inherit;
+  font-size: 1.5rem;
+  border: 3px solid white;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background: $color-primary;
+    color: white;
+  }
+}

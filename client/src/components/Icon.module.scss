@@ -1,0 +1,10 @@
+.icon {
+  // border-radius: 50%;
+  // padding: 0.4rem;
+  //   box-shadow: 2px 4px 4px black;
+  //   background: rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+  &:hover {
+    fill: white !important;
+  }
+}

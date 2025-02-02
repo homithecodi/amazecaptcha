@@ -1,0 +1,163 @@
+@import "./colors";
+
+// Importing Fonts
+@font-face {
+  font-family: "DancingScript";
+  src: url(./fonts/DancingScript-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: "MonomaniacOne";
+  src: url(./fonts/MonomaniacOne-Regular.ttf);
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url(./fonts/Roboto-Medium.ttf);
+}
+
+@font-face {
+  font-family: "Shabnam";
+  src: url(./fonts/Shabnam.ttf);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  // Making each rem equal to 10px => 10 * 100 / 16 = 62.5%
+  font-size: 62.5%;
+  // Default Font Family
+  font-family: "Roboto", "Shabnam";
+}
+
+h1 {
+  width: 100%;
+  font-family: "DancingScript";
+  font-size: 3.5rem;
+  text-align: center;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  user-select: none;
+  border-bottom: 2px solid white;
+}
+
+h2 {
+  font-size: 2.4rem;
+  user-select: none;
+  padding: 1rem;
+  text-align: center;
+}
+
+.dark_mode {
+  @include dark_theme;
+  transition: all 0.2s ease;
+}
+
+.app_container {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  // padding: 2rem;
+  transition: all 0.5s ease-in-out;
+}
+
+.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.show {
+  opacity: 1;
+}
+
+.message {
+  // margin-top: 20px;
+  // margin-top: 1rem;
+  font-size: 2rem;
+  font-family: inherit;
+  text-transform: uppercase;
+}
+
+.algorithm_label {
+  margin: 0.5rem;
+  font-size: 2rem;
+  font-family: inherit;
+  text-transform: uppercase;
+}
+
+.reset_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 22rem;
+  padding: 1rem 2rem;
+  margin: 1rem;
+  font-family: inherit;
+  background: white;
+  border-radius: 8px;
+  border: 4px solid $color-primary;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background: $color-primary;
+    border: 4px transparent solid;
+    color: white;
+  }
+  &:hover > svg {
+    fill: white !important;
+  }
+}
+
+.start {
+  background: white;
+  color: $color-primary;
+  font-family: inherit;
+  font-size: 4rem;
+  width: 20rem;
+  height: 20rem;
+  border: 8px $color-primary solid;
+  border-radius: 50%;
+  position: fixed;
+  transition: all 0.2s ease-in-out;
+  transform: translateX(calc(50vw - 50%)) translateY(calc(50vh - 50% - 15rem))
+    scale(1);
+  cursor: pointer;
+  text-transform: uppercase;
+
+  &:hover {
+    transform: translateX(calc(50vw - 50%)) translateY(calc(50vh - 50% - 15rem))
+      scale(1.05);
+    background: $color-primary;
+    color: white;
+  }
+}
+
+// Accessibility Buttons Container
+.icons {
+  width: 22rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media screen and (max-width: 600px) {
+    flex-direction: row;
+  }
+}
+
+// Arrow Control Buttons Container
+.controlButtons {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: repeat(3, 5rem);
+  grid-template-rows: repeat(3, 5rem);
+  margin-bottom: 1rem;
+}
