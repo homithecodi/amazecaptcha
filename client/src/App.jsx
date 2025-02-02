@@ -13,8 +13,6 @@ import Icon from "./components/Icon";
 const socket = io("http://localhost:3001");
 // const socket = io("http://192.168.1.109:3001");
 
-// A TEST
-
 function App() {
   // STATES HERE
   const [maze, setMaze] = useState([]);
