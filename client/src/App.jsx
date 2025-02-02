@@ -5,7 +5,7 @@ import AlgorithmDropdown from "./components/AlgorithmDropdown";
 import ResultScreen from "./components/ResultScreen";
 import AccessibilityButton from "./components/AccessibilityButton";
 import ControlButton from "./components/ControlButton";
-import ThemeToggle from "./components/ThemeToggle";
+// import ThemeToggle from "./components/ThemeToggle";
 import styles from "./App.module.scss";
 import beepSound from "./audios/beep01.mp3";
 import Icon from "./components/Icon";
