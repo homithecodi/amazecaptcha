@@ -10,8 +10,9 @@ import styles from "./App.module.scss";
 import beepSound from "./audios/beep01.mp3";
 import Icon from "./components/Icon";
 
-const socket = io("http://localhost:3001");
+// const socket = io("http://localhost:3001");
 // const socket = io("http://192.168.1.109:3001");
+const socket = io("https://amazecaptcha.liara.run/");
 
 function App() {
   // STATES HERE
