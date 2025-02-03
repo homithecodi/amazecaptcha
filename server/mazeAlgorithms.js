@@ -113,6 +113,7 @@ function generateMazePrim(width, height) {
     }
   }
 
+  // Adds walls of the current cell to the stack of walls
   function addWalls(x, y) {
     for (const [dx, dy] of directions) {
       const nx = x + dx;
@@ -125,10 +126,12 @@ function generateMazePrim(width, height) {
 
   function carve(x, y) {
     maze[y][x] = 0;
+    // Add neighbour walls to list of walls to be processed
     addWalls(x, y);
   }
 
   carve(1, 1);
+
   while (walls.length > 0) {
     shuffle(walls);
     const [x, y, px, py] = walls.pop();
@@ -169,6 +172,7 @@ function generateMazeKruskal(width, height) {
     [-2, 0],
   ];
 
+  // Finds and returns the set that contains the given cell
   function findSet(cell) {
     for (const set of sets) {
       if (set.has(cell)) return set;
@@ -176,11 +180,14 @@ function generateMazeKruskal(width, height) {
     return null;
   }
 
+  // Merges two sets into one, ensuring all cells belong to a single set
   function unionSets(set1, set2) {
     set1.forEach((cell) => set2.add(cell));
     sets.splice(sets.indexOf(set1), 1);
   }
 
+  // Sets: Each cell is initially its own set.
+  // Edges: All possible edges (walls) between cells are added to the edges list.
   for (let y = 1; y < height; y += 2) {
     for (let x = 1; x < width; x += 2) {
       const cell = `${x},${y}`;
@@ -195,6 +202,11 @@ function generateMazeKruskal(width, height) {
     }
   }
 
+  // Randomly Select Edge: Randomly select an edge from the list.
+  // Find Sets: Determine the sets to which the adjacent cells belong.
+  // Union: If the cells belong to different sets
+  // remove the wall between them and union the sets.
+  // This ensures no cycles are formed.
   while (edges.length > 0) {
     const [x, y, nx, ny] = edges.splice(
       Math.floor(Math.random() * edges.length),
@@ -420,6 +432,7 @@ function generateMazeGrowingTree(width, height) {
     [-2, 0],
   ];
 
+  // Randomly shuffle the directions array
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -441,6 +454,7 @@ function generateMazeGrowingTree(width, height) {
       for (const [dx, dy] of directions) {
         const nx = cell[0] + dx;
         const ny = cell[1] + dy;
+        // Converts the target cell and the intermediate cell into paths (0).
         if (
           ny > 0 &&
           ny < height &&
