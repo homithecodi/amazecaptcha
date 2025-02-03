@@ -11,21 +11,35 @@ const server = http.createServer(app);
 // app.use(cors()); // Enable CORS
 const io = socketIo(server, {
   cors: {
-    // origin: "http://localhost:3000", // Replace with your React app's URL
+    origin: "http://localhost:3000", // Replace with your React app's URL
     // origin: "http://192.168.1.109:3000",
-    origin: "https://amazecaptcha.liara.run/",
+    // origin: "https://homithecodi.github.io",
     methods: ["GET", "POST"],
   },
 });
 
 app.use(
   cors({
-    // origin: "http://localhost:3000", // Replace with your React app's URL
+    origin: "http://localhost:3000", // Replace with your React app's URL
     // origin: "http://192.168.1.109:3000",
-    origin: "https://amazecaptcha.liara.run/",
+    // origin: "https://homithecodi.github.io/amazecaptcha/",
     methods: ["GET", "POST"],
   })
 );
+
+// const allowedOrigins = ["https://homithecodi.github.io"];
+
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     if (allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
+
+// app.use(cors(corsOptions)); // Enable CORS with custom options
 
 // Importing Functions
 const {

@@ -1,14 +1,13 @@
 /*** ----------------Randomg Maze---------------- ***/
 function generateMazeRandom(width, height, wallDensity = 0.3) {
   // Default Wall Density set to 30%
+  // Fill the Maze with empty paths
   const maze = Array.from({ length: height }, () => Array(width).fill(0));
   for (let i = 0; i < height; i++) {
     for (let j = 0; j < width; j++) {
       if (Math.random() < wallDensity) {
         maze[i][j] = 1;
       }
-      // 1 represents a wall, 0 represents a path
-      // maze[i][j] = Math.random() > 0.7 ? 1 : 0;
     }
   }
 
@@ -32,10 +31,12 @@ function generateMazeDFS(width, height) {
   ];
 
   function isValid(x, y) {
+    // Check if x and y are within the maze boundaries
     return x >= 0 && y >= 0 && x < width && y < height;
   }
 
   function shuffle(array) {
+    // Shuffles the directions to ensure that the maze generation is not biased
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
@@ -74,6 +75,20 @@ function generateMazeDFS(width, height) {
 
   // Start carving from the top-left corner
   carvePath(1, 1);
+
+  // Ensure the border cells are all walls
+  for (let i = 0; i < height; i++) {
+    maze[i][0] = 1;
+    maze[i][width - 1] = 1;
+  }
+  for (let j = 0; j < width; j++) {
+    maze[0][j] = 1;
+    maze[height - 1][j] = 1;
+  }
+
+  // Ensure the start and end points are paths
+  maze[1][1] = 0; // Adjust this to your desired starting point
+  maze[height - 2][width - 2] = 0; // Adjust this to your desired ending point
 
   return maze;
 }
@@ -122,6 +137,20 @@ function generateMazePrim(width, height) {
       carve(x, y);
     }
   }
+
+  // Ensure the border cells are all walls
+  for (let i = 0; i < height; i++) {
+    maze[i][0] = 1;
+    maze[i][width - 1] = 1;
+  }
+  for (let j = 0; j < width; j++) {
+    maze[0][j] = 1;
+    maze[height - 1][j] = 1;
+  }
+
+  // Ensure the start and end points are paths
+  maze[1][1] = 0; // Adjust this to your desired starting point
+  maze[height - 2][width - 2] = 0; // Adjust this to your desired ending point
 
   return maze;
 }
@@ -181,6 +210,20 @@ function generateMazeKruskal(width, height) {
     }
   }
 
+  // Ensure the border cells are all walls
+  for (let i = 0; i < height; i++) {
+    maze[i][0] = 1;
+    maze[i][width - 1] = 1;
+  }
+  for (let j = 0; j < width; j++) {
+    maze[0][j] = 1;
+    maze[height - 1][j] = 1;
+  }
+
+  // Ensure the start and end points are paths
+  maze[1][1] = 0; // Adjust this to your desired starting point
+  maze[height - 2][width - 2] = 0; // Adjust this to your desired ending point
+
   return maze;
 }
 
@@ -236,6 +279,21 @@ function generateMazeDivision(width, height) {
       }
     }
   }
+
+  // Ensure the border cells are all walls
+  for (let i = 0; i < height; i++) {
+    maze[i][0] = 1;
+    maze[i][width - 1] = 1;
+  }
+  for (let j = 0; j < width; j++) {
+    maze[0][j] = 1;
+    maze[height - 1][j] = 1;
+  }
+
+  // Ensure the start and end points are paths
+  maze[1][1] = 0; // Adjust this to your desired starting point
+  maze[height - 2][width - 2] = 0; // Adjust this to your desired ending point
+
   return maze;
 }
 
@@ -405,6 +463,21 @@ function generateMazeGrowingTree(width, height) {
   }
 
   carve(1, 1);
+
+  // Ensure the border cells are all walls
+  for (let i = 0; i < height; i++) {
+    maze[i][0] = 1;
+    maze[i][width - 1] = 1;
+  }
+  for (let j = 0; j < width; j++) {
+    maze[0][j] = 1;
+    maze[height - 1][j] = 1;
+  }
+
+  // Ensure the start and end points are paths
+  maze[1][1] = 0; // Adjust this to your desired starting point
+  maze[height - 2][width - 2] = 0; // Adjust this to your desired ending point
+
   return maze;
 }
 
