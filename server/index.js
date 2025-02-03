@@ -11,16 +11,18 @@ const server = http.createServer(app);
 // app.use(cors()); // Enable CORS
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000", // Replace with your React app's URL
+    // origin: "http://localhost:3000", // Replace with your React app's URL
     // origin: "http://192.168.1.109:3000",
+    origin: "https://amazecaptcha.liara.run/",
     methods: ["GET", "POST"],
   },
 });
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with your React app's URL
+    // origin: "http://localhost:3000", // Replace with your React app's URL
     // origin: "http://192.168.1.109:3000",
+    origin: "https://amazecaptcha.liara.run/",
     methods: ["GET", "POST"],
   })
 );
