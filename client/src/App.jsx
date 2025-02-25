@@ -142,6 +142,7 @@ function App() {
     setGameOver(false);
     setPlayer({});
     setGoals([]);
+    setSubmitBtnDisabled(false);
     socket.emit("reset", { algorithm });
   };
 
