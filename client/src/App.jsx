@@ -10,9 +10,9 @@ import styles from "./App.module.scss";
 import beepSound from "./audios/beep01.mp3";
 import Icon from "./components/Icon";
 
-const socket = io("http://localhost:3001");
+// const socket = io("http://localhost:3001");
 // const socket = io("http://192.168.1.109:3001");
-// const socket = io("https://amazecaptcha.liara.run/");
+const socket = io("https://amazecaptcha.liara.run/");
 
 function App() {
   // STATES HERE
@@ -37,6 +37,7 @@ function App() {
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("male");
   const [comment, setComment] = useState("");
+  const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
 
   // REFS HERE
   const startRef = useRef(null);
@@ -130,6 +131,7 @@ function App() {
       comment,
     };
     socket.emit("submit-test", data);
+    setSubmitBtnDisabled(true);
   };
 
   const resetGame = () => {
@@ -465,6 +467,7 @@ function App() {
           message={message}
           resetGame={resetGame}
           handleSubmit={handleSubmit}
+          submitBtnDisabled={submitBtnDisabled}
         />
       )}
     </>

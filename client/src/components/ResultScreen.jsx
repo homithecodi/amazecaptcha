@@ -16,6 +16,7 @@ function ResultScreen({
   message,
   resetGame,
   handleSubmit,
+  submitBtnDisabled,
 }) {
   const resultRef = useRef(null);
   // const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
@@ -75,9 +76,9 @@ function ResultScreen({
             <option value="" disabled>
               Select your gender
             </option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Prefer not to say</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Prefer not to say</option>
           </select>
         </label>
         <label className={styles.field}>
@@ -89,7 +90,11 @@ function ResultScreen({
           ></textarea>
         </label>
 
-        <button className={styles.submitBtn} type="submit">
+        <button
+          className={styles.submitBtn}
+          type="submit"
+          disabled={submitBtnDisabled}
+        >
           SUBMIT
         </button>
       </form>

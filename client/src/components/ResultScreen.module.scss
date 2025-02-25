@@ -142,6 +142,10 @@
   cursor: pointer;
   transition: all 0.2s ease-out;
 
+  &:disabled {
+    background: grey;
+  }
+
   &:hover {
     transform: translateY(-4px);
   }
