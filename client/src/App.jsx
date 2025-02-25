@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Maze from "./components/Maze";
-import AlgorithmDropdown from "./components/AlgorithmDropdown";
+// import AlgorithmDropdown from "./components/AlgorithmDropdown";
 import ResultScreen from "./components/ResultScreen";
 import AccessibilityButton from "./components/AccessibilityButton";
 import ControlButton from "./components/ControlButton";
@@ -10,9 +10,9 @@ import styles from "./App.module.scss";
 import beepSound from "./audios/beep01.mp3";
 import Icon from "./components/Icon";
 
-// const socket = io("http://localhost:3001");
+const socket = io("http://localhost:3001");
 // const socket = io("http://192.168.1.109:3001");
-const socket = io("https://amazecaptcha.liara.run/");
+// const socket = io("https://amazecaptcha.liara.run/");
 
 function App() {
   // STATES HERE
@@ -21,7 +21,7 @@ function App() {
   const [goals, setGoals] = useState([]);
   const [message, setMessage] = useState("");
   const [gameOver, setGameOver] = useState(false);
-  const [algorithm, setAlgorithm] = useState("random");
+  const [algorithm, setAlgorithm] = useState("growing-tree");
   const [beepInterval, setBeepInterval] = useState(null);
   const [vibrationPattern, setVibrationPattern] = useState([]);
   const [isGameStarted, setIsGameStarted] = useState(false);
@@ -33,11 +33,17 @@ function App() {
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [gameWon, setGameWon] = useState(false);
-  // const [theme, setTheme] = useState(true);
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("male");
+  const [comment, setComment] = useState("");
 
   // REFS HERE
   const startRef = useRef(null);
   const appRef = useRef(null);
+
+  // Total time to complete the maze
+  const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
 
   useEffect(() => {
     socket.on("init", ({ maze, player, goals }) => {
@@ -109,6 +115,22 @@ function App() {
       }
     });
   }, []);
+
+  // Sending data to server after game won!
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = {
+      name,
+      age,
+      gender,
+      date: new Date().toISOString(),
+      algorithm,
+      moveCount,
+      timeTaken,
+      comment,
+    };
+    socket.emit("submit-test", data);
+  };
 
   const resetGame = () => {
     setMoveCount(0);
@@ -288,6 +310,7 @@ function App() {
     }
   }, [isGameStarted]);
 
+  // LOWER THE TIME INTERVAL HERE!
   useEffect(() => {
     const interval = setInterval(() => {
       if (!gameOver && isGameStarted) {
@@ -345,8 +368,8 @@ function App() {
       )}
       {isGameStarted && (
         <div ref={appRef} className={`${styles.hide} ${styles.app_container}`}>
-          <AlgorithmDropdown setAlgorithm={setAlgorithm} />
-          <p className={styles.algorithm_label}>Algorithm: {algorithm}</p>
+          {/* <AlgorithmDropdown setAlgorithm={setAlgorithm} /> */}
+          {/* <p className={styles.algorithm_label}>Algorithm: {algorithm}</p> */}
           <div className={styles.icons}>
             {/* <ThemeToggle theme={theme} setTheme={setTheme} /> */}
             <AccessibilityButton
@@ -428,12 +451,20 @@ function App() {
       )}
       {gameWon && (
         <ResultScreen
+          name={name}
+          setName={setName}
+          age={age}
+          setAge={setAge}
+          gender={gender}
+          setGender={setGender}
+          algorithm={algorithm}
           moveCount={moveCount}
-          startTime={startTime}
-          endTime={endTime}
+          timeTaken={timeTaken}
+          comment={comment}
+          setComment={setComment}
           message={message}
           resetGame={resetGame}
-          algorithm={algorithm}
+          handleSubmit={handleSubmit}
         />
       )}
     </>

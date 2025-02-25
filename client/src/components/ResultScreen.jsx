@@ -2,40 +2,102 @@ import React, { useRef } from "react";
 import styles from "./ResultScreen.module.scss";
 
 function ResultScreen({
+  name,
+  setName,
+  age,
+  setAge,
+  gender,
+  setGender,
+  algorithm,
   moveCount,
-  startTime,
-  endTime,
+  timeTaken,
+  comment,
+  setComment,
   message,
   resetGame,
-  algorithm,
+  handleSubmit,
 }) {
   const resultRef = useRef(null);
-
-  const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+  // const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
 
   if (resultRef.current) {
     setTimeout(() => {
       resultRef.current.classList.remove(styles.hide);
     }, 500);
   }
+
   return (
     <div ref={resultRef} className={`${styles.results} ${styles.hide}`}>
       <h2 className={styles.header}>
         {message ? message : "Waiting for server response..."}
       </h2>
-      <ul className={styles.table}>
-        <li className={styles.cell}>Algorithm:</li>
-        <li className={styles.cell}>{algorithm}</li>
-        <li className={styles.cell}>No. of moves:</li>
-        <li className={styles.cell}>{moveCount}</li>
-        <li className={styles.cell}>Time:</li>
-        <li className={styles.cell}>{`${timeTaken}s`}</li>
-      </ul>
-      <a href="https://www.google.com">
+      <form className={styles.table} onSubmit={handleSubmit}>
+        <label className={styles.field}>
+          Algorithm:
+          <input type="text" value={algorithm} readOnly />
+        </label>
+        <label className={styles.field}>
+          No. of Moves:
+          <input type="text" value={moveCount} readOnly />
+        </label>
+        <label className={styles.field}>
+          Time:
+          <input type="text" value={`${timeTaken}s`} readOnly />
+        </label>
+        <label className={styles.field}>
+          Name:
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your name..."
+            autoComplete="off"
+            required
+          />
+        </label>
+        <label className={styles.field}>
+          Age:
+          <input
+            type="number"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            placeholder="Enter your age..."
+            required
+          />
+        </label>
+        <label className={styles.field}>
+          Gender:
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            required
+          >
+            <option value="" disabled>
+              Select your gender
+            </option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Prefer not to say</option>
+          </select>
+        </label>
+        <label className={styles.field}>
+          Add a comment:
+          <textarea
+            value={comment}
+            placeholder="(Optional)"
+            onChange={(e) => setComment(e.target.value)}
+          ></textarea>
+        </label>
+
+        <button className={styles.submitBtn} type="submit">
+          SUBMIT
+        </button>
+      </form>
+      {/* <a href="https://www.google.com">
         <button className={styles.btn}>Continue?</button>
-      </a>
+      </a> */}
       <button className={styles.btn} onClick={resetGame}>
-        RESET
+        RESTART
       </button>
     </div>
   );

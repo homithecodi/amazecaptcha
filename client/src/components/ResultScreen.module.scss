@@ -4,11 +4,11 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  color: white;
-  background: radial-gradient($color-primary, lighten($color-primary, 20%));
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: radial-gradient($color-primary, lighten($color-primary, 20%));
+  color: white;
   transition: all 0.5s ease-in-out;
   opacity: 1;
 
@@ -24,31 +24,88 @@
 
 .table {
   background: white;
-  display: grid;
-  grid-template-columns: repeat(2, 18rem);
-  gap: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   font-size: 2rem;
-  border-radius: 8px;
   border: 4px solid white;
-  margin: 2rem;
+  border-radius: 8px;
+  padding: 1rem 2rem;
   cursor: default;
 }
 
-.cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.field {
   width: 100%;
-  height: 100%;
-  padding: 1rem 2rem;
-  background: $color-primary;
-  border-radius: 8px;
-  text-transform: capitalize;
+  display: flex;
+  flex-direction: row;
+  // padding: 1rem 2rem;
+  justify-content: space-between;
+  align-items: center;
+  color: $color-primary;
+  margin: 0.5rem 0;
+  // padding: 0.rem 2rem;
 
-  &:nth-child(odd) {
-    justify-content: flex-start;
-    background: rgb(214, 214, 214);
-    color: $color-primary;
+  & input {
+    width: 60%;
+    font-family: inherit;
+    font-size: 2rem;
+    background: $color-primary;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    text-align: center;
+    outline: none;
+    transition: all 0.5s ease-out;
+  }
+
+  // Remove arrow from the number input box
+  & input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  & input::placeholder {
+    color: white;
+    opacity: 0.8;
+    font-family: inherit;
+    font-size: 1.4rem;
+  }
+
+  & input:invalid {
+    background: rgb(200, 0, 0);
+  }
+
+  & select {
+    width: 60%;
+    font-family: inherit;
+    font-size: 2rem;
+    background: $color-primary;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    outline: none;
+    text-align: center;
+  }
+
+  & option {
+    background: white;
+    color: black;
+  }
+
+  & textarea {
+    font-family: inherit;
+    font-size: 1.5rem;
+    width: 60%;
+    height: 15rem;
+    resize: none;
+    border: 4px $color-primary solid;
+    border-radius: 4px;
+    outline: none;
+    padding: 1rem;
+    overflow: hidden;
   }
 }
 
@@ -68,5 +125,24 @@
   &:hover {
     background: $color-primary;
     color: white;
+  }
+}
+
+.submitBtn {
+  font-family: inherit;
+  font-size: 2rem;
+  width: 50%;
+  padding: 1rem 2rem;
+  margin: 2rem;
+  background: $color-primary;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 4px 4px black;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+
+  &:hover {
+    transform: translateY(-4px);
   }
 }
