@@ -3,6 +3,7 @@ const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
 const cors = require("cors");
+const { Pool } = require("pg");
 
 const app = express();
 const server = http.createServer(app);
@@ -11,18 +12,18 @@ const server = http.createServer(app);
 // app.use(cors()); // Enable CORS
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000", // Replace with your React app's URL
+    // origin: "http://localhost:3000", // Replace with your React app's URL
     // origin: "http://192.168.1.109:3000",
-    // origin: "https://homithecodi.github.io",
+    origin: "https://homithecodi.github.io",
     methods: ["GET", "POST"],
   },
 });
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with your React app's URL
+    // origin: "http://localhost:3000", // Replace with your React app's URL
     // origin: "http://192.168.1.109:3000",
-    // origin: "https://homithecodi.github.io/amazecaptcha/",
+    origin: "https://homithecodi.github.io",
     methods: ["GET", "POST"],
   })
 );
@@ -53,16 +54,16 @@ const {
   generateMazeGrowingTree,
 } = require("./mazeAlgorithms.js");
 
+const pool = new Pool({
+  user: "root",
+  host: "postgresql",
+  database: "mazeResults",
+  password: "Pkvv01jo2RRwAx78w3l81I5W",
+  port: 5432,
+});
+
 // Importing PathFinding Functions
 const { findPath } = require("./pathfinding.js");
-
-// import {
-//   generateMazeDFS,
-//   generateMazePrim,
-//   generateMazeKruskal,
-//   generateMazeDivision,
-//   generateRandomMaze,
-// } from "./mazeAlgorithms.js";
 
 // Set the Maze Size Width and Height
 const MAZE_SIZE = 20;
@@ -177,7 +178,7 @@ function getDistanceSignal(distance, mazeSize) {
 }
 
 io.on("connection", (socket) => {
-  const initializeGame = (algorithm = "random") => {
+  const initializeGame = (algorithm = "growing-tree") => {
     console.log(`User Connected: ${socket.id}`);
     const maze = generateMaze(MAZE_SIZE, algorithm); // 10x10 maze
     const player = generatePlayer(maze);
@@ -222,6 +223,31 @@ io.on("connection", (socket) => {
       const distance = calculateDistance(playerPosition, trueGoal);
       const distanceSignal = getDistanceSignal(distance, MAZE_SIZE);
       socket.emit("distance", distanceSignal);
+    }
+  });
+
+  // Sending data to DataBase
+  socket.on("submit-test", async (data) => {
+    const client = await pool.connect();
+    try {
+      const res = await client.query(
+        "INSERT INTO maze_results (name, age, gender, time, date, algorithm, move_count, comment) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+        [
+          data.name,
+          data.age,
+          data.gender,
+          data.timeTaken,
+          data.date,
+          data.algorithm,
+          data.moveCount,
+          data.comment,
+        ]
+      );
+      console.log("Data inserted:", res.rows);
+    } catch (err) {
+      console.error("Error executing query", err.stack);
+    } finally {
+      client.release();
     }
   });
 

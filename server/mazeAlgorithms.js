@@ -24,10 +24,10 @@ function generateMazeDFS(width, height) {
   const maze = Array.from({ length: height }, () => Array(width).fill(1)); // Initialize maze with walls
   const stack = [];
   const directions = [
-    [0, 2],
-    [2, 0],
-    [0, -2],
-    [-2, 0], // Right, Down, Left, Up
+    [0, 2], // Down
+    [2, 0], // Right
+    [0, -2], // Up
+    [-2, 0], // Left
   ];
 
   function isValid(x, y) {
@@ -74,17 +74,17 @@ function generateMazeDFS(width, height) {
   }
 
   // Start carving from the top-left corner
-  carvePath(1, 1);
+  carvePath(0, 0);
 
-  // Ensure the border cells are all walls
-  for (let i = 0; i < height; i++) {
-    maze[i][0] = 1;
-    maze[i][width - 1] = 1;
-  }
-  for (let j = 0; j < width; j++) {
-    maze[0][j] = 1;
-    maze[height - 1][j] = 1;
-  }
+  // // Ensure the border cells are all walls
+  // for (let i = 0; i < height; i++) {
+  //   maze[i][0] = 1;
+  //   maze[i][width - 1] = 1;
+  // }
+  // for (let j = 0; j < width; j++) {
+  //   maze[0][j] = 1;
+  //   maze[height - 1][j] = 1;
+  // }
 
   // Ensure the start and end points are paths
   maze[1][1] = 0; // Adjust this to your desired starting point
