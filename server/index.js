@@ -12,18 +12,18 @@ const server = http.createServer(app);
 // app.use(cors()); // Enable CORS
 const io = socketIo(server, {
   cors: {
-    // origin: "http://localhost:3000", // Replace with your React app's URL
+    origin: "http://localhost:3000", // Replace with your React app's URL
     // origin: "http://192.168.1.109:3000",
-    origin: "https://homithecodi.github.io",
+    // origin: "https://homithecodi.github.io",
     methods: ["GET", "POST"],
   },
 });
 
 app.use(
   cors({
-    // origin: "http://localhost:3000", // Replace with your React app's URL
+    origin: "http://localhost:3000", // Replace with your React app's URL
     // origin: "http://192.168.1.109:3000",
-    origin: "https://homithecodi.github.io",
+    // origin: "https://homithecodi.github.io",
     methods: ["GET", "POST"],
   })
 );
@@ -142,12 +142,22 @@ function generatePlayer(maze) {
 
 function generateGoals(maze) {
   const goals = [];
+  const minDistance = 8;
+
   for (let i = 0; i < 3; i++) {
     let x, y;
+    let isTooClose;
+
     do {
-      x = Math.floor(Math.random() * maze[0].length);
-      y = Math.floor(Math.random() * maze.length);
-    } while (maze[y][x] === 1); // Ensure goal is not placed on a wall
+      // Randomly generate coordinates within the maze bounds
+      x = Math.floor(Math.random() * maze[0].length); // Number of Columns of a row
+      y = Math.floor(Math.random() * maze.length); // Number of Rows of the maze
+      isTooClose = goals.some(
+        (goal) =>
+          Math.abs(goal.x - x) < minDistance &&
+          Math.abs(goal.y - y) < minDistance
+      );
+    } while (maze[y][x] === 1 || isTooClose); // Ensure goal is not placed on a wall or too close to another goal
     goals.push({ x, y });
   }
   const trueGoalIndex = Math.floor(Math.random() * 3); // Randomly select one goal as the true goal
