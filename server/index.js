@@ -219,6 +219,8 @@ function generateGoals(maze, player, minDistance = 3) {
   }
 
   // IN CASE SHIT HAPPENED!!!
+  // THIS CODE WILL WIPE THE GOALS ARRAY AND GENERATE RANDOM LOCATION GOALS
+
   // if (!isValid) {
   //   console.warn(
   //     "Failed to place goals after maximum attempts. Regenerating goals."
