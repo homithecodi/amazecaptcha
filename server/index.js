@@ -316,18 +316,21 @@ io.on("connection", (socket) => {
     }
   });
 
+  ///////////////////////////////////////////////////////////////
   // Sending data to DataBase
+  ///////////////////////////////////////////////////////////////
   socket.on("submit-test", async (data) => {
     const client = await pool.connect();
     try {
       const res = await client.query(
-        "INSERT INTO maze_results (name, age, gender, time, date, algorithm, move_count, comment) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+        "INSERT INTO maze_results (name, age, gender, time, date, maze_size, algorithm, move_count, comment) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
         [
           data.name,
           data.age,
           data.gender,
           data.timeTaken,
           data.date,
+          MAZE_SIZE,
           data.algorithm,
           data.moveCount,
           data.comment,
