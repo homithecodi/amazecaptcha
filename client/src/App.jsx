@@ -9,6 +9,7 @@ import ControlButton from "./components/ControlButton";
 import styles from "./App.module.scss";
 import beepSound from "./audios/beep01.mp3";
 import Icon from "./components/Icon";
+import Tutorial from "./components/Tutorial";
 
 const socket = io("http://localhost:3001");
 // const socket = io("http://192.168.1.109:3001");
@@ -38,6 +39,7 @@ function App() {
   const [gender, setGender] = useState("male");
   const [comment, setComment] = useState("");
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
+  const [device, setDevice] = useState("");
 
   // REFS HERE
   const startRef = useRef(null);
@@ -297,10 +299,10 @@ function App() {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (gameOver) return;
-      if (event.key === "ArrowUp") handlePlayerMove("up");
-      if (event.key === "ArrowDown") handlePlayerMove("down");
-      if (event.key === "ArrowLeft") handlePlayerMove("left");
-      if (event.key === "ArrowRight") handlePlayerMove("right");
+      if (event.key === "ArrowUp") handleAutoMove("up");
+      if (event.key === "ArrowDown") handleAutoMove("down");
+      if (event.key === "ArrowLeft") handleAutoMove("left");
+      if (event.key === "ArrowRight") handleAutoMove("right");
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => {
@@ -367,9 +369,12 @@ function App() {
   return (
     <>
       {!isGameStarted && !gameWon && (
-        <button className={styles.start} onClick={startGame} ref={startRef}>
-          Start
-        </button>
+        <div className={styles.start_page}>
+          <button className={styles.start} onClick={startGame} ref={startRef}>
+            Start
+          </button>
+          <Tutorial device={device} setDevice={setDevice} />
+        </div>
       )}
       {isGameStarted && (
         <div ref={appRef} className={`${styles.hide} ${styles.app_container}`}>
