@@ -28,20 +28,6 @@ app.use(
   })
 );
 
-// const allowedOrigins = ["https://homithecodi.github.io"];
-
-// const corsOptions = {
-//   origin: (origin, callback) => {
-//     if (allowedOrigins.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-// };
-
-// app.use(cors(corsOptions)); // Enable CORS with custom options
-
 // Importing Functions
 const {
   generateMazeRandom,
@@ -54,6 +40,7 @@ const {
   generateMazeGrowingTree,
 } = require("./mazeAlgorithms.js");
 
+// Database Connection data
 const pool = new Pool({
   user: "root",
   host: "postgresql",
@@ -63,71 +50,111 @@ const pool = new Pool({
 });
 
 // Importing PathFinding Functions
-const { findPath } = require("./pathfinding.js");
+// const { findPath } = require("./pathfinding.js");
+// import { heuristic, neighbors, aStar } from "./pathfinding.js";
+const { aStar } = require("./pathfinding.js");
 
 // Set the Maze Size Width and Height
-const MAZE_SIZE = 20;
+const MAZE_SIZE = 16;
+// Set the Distance of Goals from each other
+const GOALS_DISTANCE = 8;
 // Set the Wall Density of Random Maze
 const WALL_DENSITY = 0.3;
 
 function generateMaze(size, algorithm) {
   let maze;
-  let retries = 0;
-  const maxRetries = 10;
-  do {
-    switch (algorithm) {
-      case "dfs":
-        console.log("Using Depth-First Search Algorithm");
-        maze = generateMazeDFS(size, size);
-        break;
-      case "prim":
-        console.log("Using Prim Algorithm");
-        maze = generateMazePrim(size, size);
-        break;
-      case "kruskal":
-        console.log("Using Kruskal Algorithm");
-        maze = generateMazeKruskal(size, size);
-        break;
-      case "division":
-        console.log("Using Recursive Division Algorithm");
-        maze = generateMazeDivision(size, size);
-        break;
-      case "division2":
-        console.log("Using Recursive Division2 Algorithm");
-        maze = generateMazeDivision2(size, size);
-        break;
-      case "randomKruskal":
-        console.log("Using Randomized Kruskal Algorithm");
-        maze = generateMazeRandKruskal(size, size);
-        break;
-      case "growing-tree":
-        console.log("Using Growing Tree Algorithm");
-        maze = generateMazeGrowingTree(size, size);
-        break;
-      default:
-        console.log("Using Random Algorithm");
-        maze = generateMazeRandom(size, size, WALL_DENSITY);
-    }
-    retries++;
-  } while (
-    !findPath(maze, { x: 1, y: 1 }, { x: size - 2, y: size - 2 }) &&
-    retries < maxRetries
-  );
+
+  switch (algorithm) {
+    case "dfs":
+      console.log("Using Depth-First Search Algorithm");
+      maze = generateMazeDFS(size, size);
+      break;
+    case "prim":
+      console.log("Using Prim Algorithm");
+      maze = generateMazePrim(size, size);
+      break;
+    case "kruskal":
+      console.log("Using Kruskal Algorithm");
+      maze = generateMazeKruskal(size, size);
+      break;
+    case "division":
+      console.log("Using Recursive Division Algorithm");
+      maze = generateMazeDivision(size, size);
+      break;
+    case "division2":
+      console.log("Using Recursive Division2 Algorithm");
+      maze = generateMazeDivision2(size, size);
+      break;
+    case "randomKruskal":
+      console.log("Using Randomized Kruskal Algorithm");
+      maze = generateMazeRandKruskal(size, size);
+      break;
+    case "growing-tree":
+      console.log("Using Growing Tree Algorithm");
+      maze = generateMazeGrowingTree(size, size);
+      break;
+    default:
+      console.log("Using Random Algorithm");
+      maze = generateMazeRandom(size, size, WALL_DENSITY);
+  }
+  // retries++;
+  // } while (
+  //   !findPath(maze, { x: 1, y: 1 }, { x: size - 2, y: size - 2 }) &&
+  //   retries < maxRetries
+  // );
   // while (!findPath(maze) && retries < maxRetries);
 
-  if (retries === maxRetries) {
-    console.log("FAILED!");
-  }
+  // if (retries === maxRetries) {
+  //   console.log("FAILED!");
+  // }
 
   return maze;
 }
 
-function generatePlayer(maze) {
+// function generatePlayer(maze, goals = []) {
+//   let x, y;
+//   do {
+//     x = Math.floor(Math.random() * maze[0].length);
+//     y = Math.floor(Math.random() * maze.length);
+//   } while (
+//     maze[y][x] === 1 ||
+//     goals.some((goal) => goal.x === x && goal.y === y)
+//   ); // Ensure player is not placed on a wall or a goal
+//   return { x, y };
+// }
+
+function generatePlayer(maze, goals = [], minDistance = 3) {
   let x, y;
-  do {
+  let isValidPosition = false;
+  let attempts = 0;
+  const maxAttempts = 1000;
+
+  while (!isValidPosition && attempts < maxAttempts) {
     x = Math.floor(Math.random() * maze[0].length);
     y = Math.floor(Math.random() * maze.length);
-  } while (maze[y][x] === 1); // Ensure player is not placed on a wall
+
+    // Check if the position is not a wall and not too close to any goal
+    if (maze[y][x] !== 1) {
+      isValidPosition = true;
+      for (const goal of goals) {
+        const dx = Math.abs(goal.x - x);
+        const dy = Math.abs(goal.y - y);
+        if (dx < minDistance && dy < minDistance) {
+          isValidPosition = false;
+          break;
+        }
+      }
+    }
+    attempts++;
+  }
+
+  if (!isValidPosition) {
+    console.warn(
+      "FAILED TO PLACE PLAYER AFTER MAXIMUM ATTEMPTS. REGENERATING PLAYER POSITION!"
+    );
+    return; // Indicate failure to place player
+  }
+
   return { x, y };
 }
 
@@ -140,26 +167,115 @@ function generatePlayer(maze) {
 //   return { x, y };
 // }
 
-function generateGoals(maze) {
+function generateGoals(maze, player, minDistance = 3) {
   const goals = [];
-  const minDistance = 8;
+  // const minDistance = 10;
+  let isValid = false;
+  let attempts = 0;
+  const maxAttempts = 1000;
 
-  for (let i = 0; i < 3; i++) {
-    let x, y;
-    let isTooClose;
+  while (!isValid && attempts < maxAttempts) {
+    goals.length = 0; // Reset the goals array
 
-    do {
-      // Randomly generate coordinates within the maze bounds
-      x = Math.floor(Math.random() * maze[0].length); // Number of Columns of a row
-      y = Math.floor(Math.random() * maze.length); // Number of Rows of the maze
-      isTooClose = goals.some(
-        (goal) =>
-          Math.abs(goal.x - x) < minDistance &&
-          Math.abs(goal.y - y) < minDistance
-      );
-    } while (maze[y][x] === 1 || isTooClose); // Ensure goal is not placed on a wall or too close to another goal
-    goals.push({ x, y });
+    // Step 1: Generate all goals without checking paths
+    for (let i = 0; i < 3; i++) {
+      let x, y;
+      // let isTooClose;
+      // let attempts = 0;
+      // const maxAttempts = 10;
+      let isValidGoal = false;
+      let goalAttempts = 0;
+
+      while (!isValidGoal && goalAttempts < maxAttempts) {
+        x = Math.floor(Math.random() * maze[0].length);
+        y = Math.floor(Math.random() * maze.length);
+
+        // Check if the position is not a wall and not too close to other goals or the player
+        if (maze[y][x] !== 1) {
+          isValidGoal = true;
+          for (const goal of goals) {
+            const dx = Math.abs(goal.x - x);
+            const dy = Math.abs(goal.y - y);
+            if (dx < minDistance && dy < minDistance) {
+              isValidGoal = false;
+              break;
+            }
+          }
+
+          // Check distance from player
+          const dxPlayer = Math.abs(player.x - x);
+          const dyPlayer = Math.abs(player.y - y);
+          if (dxPlayer < minDistance && dyPlayer < minDistance) {
+            isValidGoal = false;
+          }
+        }
+        goalAttempts++;
+      }
+
+      if (isValidGoal) {
+        goals.push({ x, y });
+      } else {
+        break; // Exit if a goal cannot be placed
+      }
+
+      // do {
+      //   // Randomly generate coordinates within the maze bounds
+      //   x = Math.floor(Math.random() * maze[0].length); // Number of Columns of a row
+      //   y = Math.floor(Math.random() * maze.length); // Number of Rows of the maze
+      //   isTooClose = goals.some(
+      //     (goal) =>
+      //       Math.abs(goal.x - x) < minDistance &&
+      //       Math.abs(goal.y - y) < minDistance
+      //   );
+      //   attempts++;
+
+      //   if (attempts > maxAttempts) break;
+      // } while (maze[y][x] === 1 || isTooClose); // Ensure goal is not placed on a wall or too close to another goal
+      // goals.push({ x, y });
+    }
+
+    // Step 2: Validate the entire set of goals
+    if (goals.length === 3) {
+      isValid = true;
+      for (let i = 0; i < goals.length; i++) {
+        const goal = goals[i];
+        const otherGoals = goals.filter((g, index) => index !== i); // Treat all other goals as obstacles
+        const path = aStar(player, goal, maze, otherGoals);
+
+        if (!path) {
+          isValid = false; // If any goal is unreachable, regenerate the entire set
+          break;
+        }
+      }
+    }
+    attempts++;
   }
+
+  // if (!isValid) {
+  //   console.warn(
+  //     "Failed to place goals after maximum attempts. Regenerating goals."
+  //   );
+
+  //   return null; // Indicate failure to place goals
+  // }
+
+  // if (!isValid) {
+  //   console.warn(
+  //     "WARNING: Failed to place goals after maximum attempts. Falling back to random positions."
+  //   );
+  //   // Fallback: Place goals randomly without distance constraints
+  //   goals.length = 0;
+  //   for (let i = 0; i < 3; i++) {
+  //     let x, y;
+  //     do {
+  //       x = Math.floor(Math.random() * maze[0].length);
+  //       y = Math.floor(Math.random() * maze.length);
+  //     } while (maze[y][x] === 1);
+  //     goals.push({ x, y });
+  //   }
+  // }
+
+  // Step 3: Mark one goal as the true goal
   const trueGoalIndex = Math.floor(Math.random() * 3); // Randomly select one goal as the true goal
   goals[trueGoalIndex].isTrueGoal = true; // Mark the true goal
   console.log("Generated goals:", goals); // Debug log for generated goals
@@ -190,9 +306,9 @@ function getDistanceSignal(distance, mazeSize) {
 io.on("connection", (socket) => {
   const initializeGame = (algorithm = "growing-tree") => {
     console.log(`User Connected: ${socket.id}`);
-    const maze = generateMaze(MAZE_SIZE, algorithm); // 10x10 maze
-    const player = generatePlayer(maze);
-    const goals = generateGoals(maze);
+    const maze = generateMaze(MAZE_SIZE, algorithm);
+    const player = generatePlayer(maze, [], GOALS_DISTANCE);
+    const goals = generateGoals(maze, player, GOALS_DISTANCE);
     const trueGoal = goals.find((goal) => goal.isTrueGoal);
     socket.emit("init", { maze, player, goals });
     return { maze, player, goals, trueGoal };

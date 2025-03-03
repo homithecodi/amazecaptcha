@@ -423,6 +423,10 @@ function generateMazeRandKruskal(grid) {
 
 // server/mazeAlgorithms.js
 function generateMazeGrowingTree(width, height) {
+  // Ensure the maze dimensions are odd
+  if (width % 2 === 0) width++;
+  if (height % 2 === 0) height++;
+
   const maze = Array.from({ length: height }, () => Array(width).fill(1)); // Start with all walls
   const cells = [];
   const directions = [
@@ -456,9 +460,9 @@ function generateMazeGrowingTree(width, height) {
         const ny = cell[1] + dy;
         // Converts the target cell and the intermediate cell into paths (0).
         if (
-          ny > 0 &&
+          ny >= 0 && // Allow carving into the first row
           ny < height &&
-          nx > 0 &&
+          nx >= 0 && // Allow carving into the first column
           nx < width &&
           maze[ny][nx] === 1
         ) {
@@ -476,17 +480,17 @@ function generateMazeGrowingTree(width, height) {
     }
   }
 
-  carve(1, 1);
+  carve(0, 0);
 
-  // Ensure the border cells are all walls
-  for (let i = 0; i < height; i++) {
-    maze[i][0] = 1;
-    maze[i][width - 1] = 1;
-  }
-  for (let j = 0; j < width; j++) {
-    maze[0][j] = 1;
-    maze[height - 1][j] = 1;
-  }
+  // // Ensure the border cells are all walls
+  // for (let i = 0; i < height; i++) {
+  //   maze[i][0] = 1;
+  //   maze[i][width - 1] = 1;
+  // }
+  // for (let j = 0; j < width; j++) {
+  //   maze[0][j] = 1;
+  //   maze[height - 1][j] = 1;
+  // }
 
   // Ensure the start and end points are paths
   maze[1][1] = 0; // Adjust this to your desired starting point
