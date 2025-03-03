@@ -17,8 +17,10 @@ function ResultScreen({
   resetGame,
   handleSubmit,
   submitBtnDisabled,
+  maze,
 }) {
   const resultRef = useRef(null);
+  const mazeLength = maze.length - 1;
   // const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
 
   if (resultRef.current) {
@@ -36,6 +38,10 @@ function ResultScreen({
         <label className={styles.field}>
           Algorithm:
           <input type="text" value={algorithm} readOnly />
+        </label>
+        <label className={styles.field}>
+          Maze Length:
+          <input type="text" value={`${mazeLength}x${mazeLength}`} readOnly />
         </label>
         <label className={styles.field}>
           No. of Moves:

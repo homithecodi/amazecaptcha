@@ -10,9 +10,9 @@ import styles from "./App.module.scss";
 import beepSound from "./audios/beep01.mp3";
 import Icon from "./components/Icon";
 
-// const socket = io("http://localhost:3001");
+const socket = io("http://localhost:3001");
 // const socket = io("http://192.168.1.109:3001");
-const socket = io("https://amazecaptcha.liara.run/");
+// const socket = io("https://amazecaptcha.liara.run/");
 
 function App() {
   // STATES HERE
@@ -25,9 +25,9 @@ function App() {
   const [beepInterval, setBeepInterval] = useState(null);
   const [vibrationPattern, setVibrationPattern] = useState([]);
   const [isGameStarted, setIsGameStarted] = useState(false);
-  const [beepEnabled, setBeepEnabled] = useState(false); // MAKE IT TRUE
-  const [vibrationEnabled, setVibrationEnabled] = useState(false); // MAKE IT TRUE
-  const [pulseEnabled, setPulseEnabled] = useState(false); // MAKE IT TRUE
+  const [beepEnabled, setBeepEnabled] = useState(true); // MAKE IT TRUE
+  const [vibrationEnabled, setVibrationEnabled] = useState(true); // MAKE IT TRUE
+  const [pulseEnabled, setPulseEnabled] = useState(true); // MAKE IT TRUE
   const [pulseInterval, setPulseInterval] = useState(null);
   const [moveCount, setMoveCount] = useState(0);
   const [startTime, setStartTime] = useState(null);
@@ -143,6 +143,8 @@ function App() {
     setPlayer({});
     setGoals([]);
     setSubmitBtnDisabled(false);
+    setMaze([]); // Removing the maze so the loading screen appears
+    setMessage("");
     socket.emit("reset", { algorithm });
   };
 
@@ -171,7 +173,7 @@ function App() {
   };
 
   const handlePlayerMove = (direction) => {
-    if (gameOver) return;
+    if (gameOver || maze.length === 0) return;
 
     let newPosition = { ...player };
     const { x, y } = newPosition; // Destructure x and y from position
@@ -189,7 +191,7 @@ function App() {
   };
 
   const handleAutoMove = (direction) => {
-    if (gameOver) return;
+    if (gameOver || maze.length === 0) return;
 
     let canMove = true;
     let newPosition = { ...player };
@@ -319,7 +321,7 @@ function App() {
       if (!gameOver && isGameStarted) {
         socket.emit("playerPosition", player);
       }
-    }, 1000);
+    }, 500);
     return () => clearInterval(interval);
   }, [player, gameOver, isGameStarted]);
 
@@ -373,6 +375,9 @@ function App() {
         <div ref={appRef} className={`${styles.hide} ${styles.app_container}`}>
           {/* <AlgorithmDropdown setAlgorithm={setAlgorithm} /> */}
           {/* <p className={styles.algorithm_label}>Algorithm: {algorithm}</p> */}
+          <h1>
+            A<span>maze</span> Captcha
+          </h1>
           <div className={styles.icons}>
             {/* <ThemeToggle theme={theme} setTheme={setTheme} /> */}
             <AccessibilityButton
@@ -469,6 +474,7 @@ function App() {
           resetGame={resetGame}
           handleSubmit={handleSubmit}
           submitBtnDisabled={submitBtnDisabled}
+          maze={maze}
         />
       )}
     </>

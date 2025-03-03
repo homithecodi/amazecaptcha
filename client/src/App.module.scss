@@ -36,13 +36,19 @@ html {
 
 h1 {
   width: 100%;
-  font-family: "DancingScript";
+  font-family: "MonomaniacOne";
   font-size: 3.5rem;
+  font-weight: 400;
   text-align: center;
-  padding: 1rem 2rem;
-  border-radius: 10px;
+  margin: 1rem 2rem;
   user-select: none;
-  border-bottom: 2px solid white;
+  text-transform: uppercase;
+
+  & span {
+    background: -webkit-linear-gradient(#eee, $color-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 h2 {
@@ -50,11 +56,6 @@ h2 {
   user-select: none;
   padding: 1rem;
   text-align: center;
-}
-
-.dark_mode {
-  @include dark_theme;
-  transition: all 0.2s ease;
 }
 
 .app_container {
@@ -78,19 +79,17 @@ h2 {
 }
 
 .message {
-  // margin-top: 20px;
-  // margin-top: 1rem;
   font-size: 2rem;
   font-family: inherit;
   text-transform: uppercase;
 }
 
-.algorithm_label {
-  margin: 0.5rem;
-  font-size: 2rem;
-  font-family: inherit;
-  text-transform: uppercase;
-}
+// .algorithm_label {
+//   margin: 0.5rem;
+//   font-size: 2rem;
+//   font-family: inherit;
+//   text-transform: uppercase;
+// }
 
 .reset_btn {
   display: flex;
