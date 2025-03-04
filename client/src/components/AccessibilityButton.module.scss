@@ -4,9 +4,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  padding: 1rem 2rem;
-  margin: 0.5rem 0;
+  width: 18rem;
+  padding: 1rem;
+  margin: 0.5rem;
   cursor: pointer;
   font-family: inherit;
   background: white;
@@ -16,7 +16,6 @@
 
   &:hover {
     background: $color-primary;
-    border: 4px transparent solid;
     color: white;
   }
 
@@ -26,15 +25,11 @@
   }
 
   &_text {
-    flex: 3;
-    text-align: left;
-    margin-left: 2rem;
+    margin-left: 1rem;
   }
 
   @media screen and (max-width: 600px) {
     width: min-content;
-    padding: 1rem;
-    margin: 0 0.5rem;
 
     &_text {
       display: none;

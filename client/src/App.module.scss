@@ -34,15 +34,26 @@ html {
   font-family: "Roboto", "Shabnam";
 }
 
-h1 {
+.header {
   width: 100%;
   font-family: "MonomaniacOne";
   font-size: 3.5rem;
   font-weight: 400;
   text-align: center;
-  margin: 1rem 2rem;
+  // margin: 1rem 2rem;
+  margin: 0;
+  padding: 0;
   user-select: none;
   text-transform: uppercase;
+
+  @media only screen and (max-width: 1024px) and (orientation: landscape) {
+    font-size: 2.5rem;
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+  }
+  @media screen and (max-width: 1024px) {
+    font-size: 2.5rem;
+  }
 
   & span {
     background: -webkit-linear-gradient(#eee, $color-primary);
@@ -68,6 +79,10 @@ h2 {
   height: 100vh;
   // padding: 2rem;
   transition: all 0.5s ease-in-out;
+
+  @media only screen and (max-width: 1024px) and (orientation: landscape) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .hide {
@@ -83,6 +98,10 @@ h2 {
   font-size: 2rem;
   font-family: inherit;
   text-transform: uppercase;
+  @media only screen and (max-width: 1024px) and (orientation: landscape) {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+  }
 }
 
 // .algorithm_label {
@@ -97,7 +116,7 @@ h2 {
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  width: 22rem;
+  width: 18rem;
   padding: 1rem 2rem;
   margin: 1rem;
   font-family: inherit;
@@ -113,6 +132,16 @@ h2 {
   }
   &:hover > svg {
     fill: white !important;
+  }
+
+  // @media only screen and (max-width: 1024px) and (orientation: landscape) {
+  //   grid-row: 4 / 5;
+  //   grid-column: 2 / 3;
+  // }
+  @media only screen and (max-width: 1024px) and (orientation: landscape) {
+    grid-row: 4 / 5;
+    grid-column: 1 / 2;
+    align-self: flex-start;
   }
 }
 
@@ -130,15 +159,14 @@ h2 {
   color: $color-primary;
   font-family: inherit;
   font-size: 4rem;
-  width: 20rem;
-  height: 20rem;
-  margin-top: 20rem;
+  min-width: 20rem;
+  min-height: 20rem;
+  margin: 1rem;
+  margin-top: auto;
   border: 8px $color-primary solid;
   border-radius: 50%;
-  // position: fixed;
   transition: all 0.2s ease-in-out;
-  // transform: translateX(calc(50vw - 50%)) translateY(calc(50vh - 50% - 15rem))
-  //   scale(1);
+
   transform: scale(1);
   cursor: pointer;
   text-transform: uppercase;
@@ -152,15 +180,26 @@ h2 {
   }
 }
 
+.maze_container {
+  @media only screen and (max-width: 1024px) and (orientation: landscape) {
+    grid-row: 3 / 5;
+    grid-column: 2 / 3;
+  }
+}
+
 // Accessibility Buttons Container
 .icons {
-  width: 22rem;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  @media screen and (max-width: 600px) {
-    flex-direction: row;
+
+  @media only screen and (max-width: 1024px) and (orientation: landscape) {
+    grid-row: 3 / 4;
+    grid-column: 1 / 2;
+    flex-direction: column;
+    align-self: flex-end;
   }
 }
 
@@ -172,4 +211,9 @@ h2 {
   grid-template-columns: repeat(3, 5rem);
   grid-template-rows: repeat(3, 5rem);
   margin-bottom: 1rem;
+
+  @media only screen and (max-width: 1024px) and (orientation: landscape) {
+    grid-row: 3 / 5;
+    grid-column: 3 / 4;
+  }
 }

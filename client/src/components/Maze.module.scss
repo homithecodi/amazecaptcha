@@ -4,7 +4,7 @@
   --maze-size: 10; // Default maze size, Adjust this dynamically in JavaScript
   --cell-size: 2rem;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 1024px) {
     --cell-size: 1.5rem;
   }
 }

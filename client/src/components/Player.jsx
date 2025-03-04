@@ -6,7 +6,7 @@ function Player({ position }) {
 
   let playerSize;
 
-  if (window.innerWidth <= 600) {
+  if (window.innerWidth <= 1024) {
     // the size is based on --cell-size in Maze.module.scss
     playerSize = 1.5;
   } else {

@@ -380,7 +380,7 @@ function App() {
         <div ref={appRef} className={`${styles.hide} ${styles.app_container}`}>
           {/* <AlgorithmDropdown setAlgorithm={setAlgorithm} /> */}
           {/* <p className={styles.algorithm_label}>Algorithm: {algorithm}</p> */}
-          <h1>
+          <h1 className={styles.header}>
             A<span>maze</span> Captcha
           </h1>
           <div className={styles.icons}>
@@ -388,10 +388,10 @@ function App() {
             <AccessibilityButton
               toggle={toggleBeep}
               enabled={beepEnabled}
-              type={"Beep"}
+              type={"Sound"}
               iconNameEnabled={"volume-high"}
               iconNameDisabled={"volume-mute2"}
-              key={"beep"}
+              key={"Sound"}
             />
             <AccessibilityButton
               toggle={toggleVibrations}
@@ -411,17 +411,19 @@ function App() {
             />
           </div>
           <p className={styles.message}>{message}</p>
-          <Maze
-            maze={maze}
-            player={player}
-            goals={goals}
-            pulseInterval={pulseInterval}
-            pulseEnabled={pulseEnabled}
-            setPlayer={setPlayer}
-            setMoveCount={setMoveCount}
-            socket={socket}
-            handleAutoMove={handleAutoMove}
-          />
+          <div className={styles.maze_container}>
+            <Maze
+              maze={maze}
+              player={player}
+              goals={goals}
+              pulseInterval={pulseInterval}
+              pulseEnabled={pulseEnabled}
+              setPlayer={setPlayer}
+              setMoveCount={setMoveCount}
+              socket={socket}
+              handleAutoMove={handleAutoMove}
+            />
+          </div>
           <button className={styles.reset_btn} onClick={resetGame}>
             <Icon name={"spinner11"} color={"black"} width={2} height={2} />
             RESET

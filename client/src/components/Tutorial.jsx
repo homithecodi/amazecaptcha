@@ -33,7 +33,7 @@ function Tutorial({ device, setDevice }) {
 
   return (
     <div className={styles.tutorial_container}>
-      <div className={styles.header}>How to play?</div>
+      <h2 className={styles.header}>How to play?</h2>
       <p>
         You are the <span>Player</span>
         <div className={styles.player}></div>. Find the
@@ -60,9 +60,9 @@ function Tutorial({ device, setDevice }) {
         )}
       </div>
       <div className={styles.dropdown}>
-        <label htmlFor="device-select">Select Device: </label>
+        {/* <label htmlFor="device-select">Select Device: </label> */}
         <select id="device-select" value={device} onChange={handleDeviceChange}>
-          <option disabled>Choose your device:</option>
+          <option disabled>Select Device:</option>
           <option value="PC">PC</option>
           <option value="Mobile">Mobile</option>
           <option value="Console">Console</option>

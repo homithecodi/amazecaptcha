@@ -40,7 +40,7 @@ function ResultScreen({
           <input type="text" value={algorithm} readOnly />
         </label>
         <label className={styles.field}>
-          Maze Length:
+          Maze Size:
           <input type="text" value={`${mazeLength}x${mazeLength}`} readOnly />
         </label>
         <label className={styles.field}>
@@ -80,7 +80,7 @@ function ResultScreen({
             required
           >
             <option value="" disabled>
-              Select your gender
+              Select gender:
             </option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -101,14 +101,14 @@ function ResultScreen({
           type="submit"
           disabled={submitBtnDisabled}
         >
-          SUBMIT
+          Submit
         </button>
       </form>
       {/* <a href="https://www.google.com">
         <button className={styles.btn}>Continue?</button>
       </a> */}
       <button className={styles.btn} onClick={resetGame}>
-        RESTART
+        Restart
       </button>
     </div>
   );
