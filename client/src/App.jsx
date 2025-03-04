@@ -147,6 +147,7 @@ function App() {
     setSubmitBtnDisabled(false);
     setMaze([]); // Removing the maze so the loading screen appears
     setMessage("");
+    setComment("");
     socket.emit("reset", { algorithm });
   };
 
