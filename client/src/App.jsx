@@ -359,14 +359,6 @@ function App() {
     }
   }, [vibrationPattern, isGameStarted, vibrationEnabled]);
 
-  // Listener for Dark / Light Mode
-  // useEffect(() => {
-  //   if (theme) {
-  //     document.body.classList.toggle(styles.dark_mode);
-  //     setTheme(!theme);
-  //   }
-  // }, [theme]);
-
   return (
     <>
       {!isGameStarted && !gameWon && (
