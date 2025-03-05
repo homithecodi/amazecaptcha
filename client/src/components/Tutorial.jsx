@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./Tutorial.module.scss";
 
-function Tutorial({ device, setDevice }) {
+function Tutorial({ device, setDevice, gamepadConnected }) {
   // Function to detect the user's device
   const detectDevice = () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -15,7 +15,7 @@ function Tutorial({ device, setDevice }) {
     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
       return "Mobile";
     }
-    if (/Xbox|PlayStation|Nintendo/.test(userAgent)) {
+    if (/Xbox|PlayStation|Nintendo/.test(userAgent) || gamepadConnected) {
       return "Console";
     }
     return "PC";
@@ -24,7 +24,8 @@ function Tutorial({ device, setDevice }) {
   // Set the device on component mount
   useEffect(() => {
     setDevice(detectDevice());
-  }, []);
+    // 'gamepad' needed -> checks if controller connects, returns "console" if true
+  }, [gamepadConnected]);
 
   // Function to handle dropdown change
   const handleDeviceChange = (event) => {

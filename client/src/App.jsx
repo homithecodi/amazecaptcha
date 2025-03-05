@@ -41,6 +41,7 @@ function App() {
   const [comment, setComment] = useState("");
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const [device, setDevice] = useState("");
+  const [gamepadConnected, setGamepadConnected] = useState(false);
 
   // REFS HERE
   const startRef = useRef(null);
@@ -195,7 +196,7 @@ function App() {
   };
 
   const handleAutoMove = (direction) => {
-    if (gameOver || maze.length === 0) return;
+    if (!isGameStarted || gameOver || maze.length === 0) return;
 
     let canMove = true;
     let newPosition = { ...player };
@@ -361,7 +362,7 @@ function App() {
   }, [vibrationPattern, isGameStarted, vibrationEnabled]);
 
   // Using Gamepad Custom Hook
-  useGamepad(handleAutoMove);
+  useGamepad(gamepadConnected, setGamepadConnected, handleAutoMove);
 
   return (
     <>
@@ -370,7 +371,11 @@ function App() {
           <button className={styles.start} onClick={startGame} ref={startRef}>
             Start
           </button>
-          <Tutorial device={device} setDevice={setDevice} />
+          <Tutorial
+            device={device}
+            setDevice={setDevice}
+            gamepadConnected={gamepadConnected}
+          />
         </div>
       )}
       {isGameStarted && (

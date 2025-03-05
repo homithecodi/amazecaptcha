@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const useGamepad = (onMove) => {
+const useGamepad = (gamepadConnected, setGamepadConnected, onMove) => {
   const buttonState = useRef({
     up: false,
     down: false,
@@ -11,10 +11,12 @@ const useGamepad = (onMove) => {
   useEffect(() => {
     const handleGamepadConnected = (event) => {
       console.log("Gamepad connected:", event.gamepad);
+      setGamepadConnected(true);
     };
 
     const handleGamepadDisconnected = (event) => {
       console.log("Gamepad disconnected:", event.gamepad);
+      setGamepadConnected(false);
     };
 
     window.addEventListener("gamepadconnected", handleGamepadConnected);
@@ -27,7 +29,7 @@ const useGamepad = (onMove) => {
         handleGamepadDisconnected
       );
     };
-  }, []);
+  }, [gamepadConnected]);
 
   useEffect(() => {
     let animationFrameId;
