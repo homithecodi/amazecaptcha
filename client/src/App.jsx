@@ -10,6 +10,7 @@ import styles from "./App.module.scss";
 import beepSound from "./audios/beep01.mp3";
 import Icon from "./components/Icon";
 import Tutorial from "./components/Tutorial";
+import useGamepad from "./components/useGamepad";
 
 const socket = io("http://localhost:3001");
 // const socket = io("http://192.168.1.109:3001");
@@ -358,6 +359,9 @@ function App() {
       };
     }
   }, [vibrationPattern, isGameStarted, vibrationEnabled]);
+
+  // Using Gamepad Custom Hook
+  useGamepad(handleAutoMove);
 
   return (
     <>
