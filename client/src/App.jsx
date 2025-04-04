@@ -11,11 +11,10 @@ import Tutorial from "./components/Tutorial";
 import useGamepad from "./components/useGamepad";
 // import ThemeToggle from "./components/ThemeToggle";
 // import AlgorithmDropdown from "./components/AlgorithmDropdown";
-// test command
 
-const socket = io("http://localhost:3001");
+// const socket = io("http://localhost:3001");
 // const socket = io("http://192.168.1.109:3001");
-// const socket = io("https://amazecaptcha.liara.run/");
+const socket = io("https://amazecaptcha.liara.run/");
 
 function App() {
   // STATES HERE
