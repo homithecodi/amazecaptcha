@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Maze from "./components/Maze";
-// import AlgorithmDropdown from "./components/AlgorithmDropdown";
 import ResultScreen from "./components/ResultScreen";
 import AccessibilityButton from "./components/AccessibilityButton";
 import ControlButton from "./components/ControlButton";
-// import ThemeToggle from "./components/ThemeToggle";
 import styles from "./App.module.scss";
 import beepSound from "./audios/beep01.mp3";
 import Icon from "./components/Icon";
 import Tutorial from "./components/Tutorial";
 import useGamepad from "./components/useGamepad";
+// import ThemeToggle from "./components/ThemeToggle";
+// import AlgorithmDropdown from "./components/AlgorithmDropdown";
 
 const socket = io("http://localhost:3001");
 // const socket = io("http://192.168.1.109:3001");
@@ -195,108 +195,111 @@ function App() {
     socket.emit("playerMove", newPosition);
   };
 
-  const handleAutoMove = (direction) => {
-    if (!isGameStarted || gameOver || maze.length === 0) return;
+  const handleAutoMove = useCallback(
+    (direction) => {
+      if (!isGameStarted || gameOver || maze.length === 0) return;
 
-    let canMove = true;
-    let newPosition = { ...player };
-    // NOTE: Need multiWay or it will not move at U shape blocks !!!
-    let multiWay = false;
+      let canMove = true;
+      let newPosition = { ...player };
+      // NOTE: Need multiWay or it will not move at U shape blocks !!!
+      let multiWay = false;
 
-    const isWallOrBoundary = (x, y) =>
-      x < 0 ||
-      x >= maze[0].length ||
-      y < 0 ||
-      y >= maze.length ||
-      maze[y][x] === 1;
+      const isWallOrBoundary = (x, y) =>
+        x < 0 ||
+        x >= maze[0].length ||
+        y < 0 ||
+        y >= maze.length ||
+        maze[y][x] === 1;
 
-    const isGoalInFront = (direction, x, y, goals) => {
-      if (goals) {
-        if (direction === "up") {
-          if (goals.some((goal) => goal.x === x && goal.y === y - 1)) {
-            // If there is a goal at top
-            canMove = false;
+      const isGoalInFront = (direction, x, y, goals) => {
+        if (goals) {
+          if (direction === "up") {
+            if (goals.some((goal) => goal.x === x && goal.y === y - 1)) {
+              // If there is a goal at top
+              canMove = false;
+            }
+          } else if (direction === "down") {
+            if (goals.some((goal) => goal.x === x && goal.y === y + 1)) {
+              // If there is a goal at bottom
+              canMove = false;
+            }
+          } else if (direction === "left") {
+            if (goals.some((goal) => goal.x === x - 1 && goal.y === y)) {
+              // If there is a goal at left
+              canMove = false;
+            }
+          } else if (direction === "right") {
+            if (goals.some((goal) => goal.x === x + 1 && goal.y === y)) {
+              // If there is a goal at right
+              canMove = false;
+            }
           }
-        } else if (direction === "down") {
-          if (goals.some((goal) => goal.x === x && goal.y === y + 1)) {
-            // If there is a goal at bottom
-            canMove = false;
-          }
-        } else if (direction === "left") {
-          if (goals.some((goal) => goal.x === x - 1 && goal.y === y)) {
-            // If there is a goal at left
-            canMove = false;
-          }
-        } else if (direction === "right") {
-          if (goals.some((goal) => goal.x === x + 1 && goal.y === y)) {
-            // If there is a goal at right
-            canMove = false;
-          }
+          return false;
         }
-        return false;
+      };
+
+      // Stop at two ways
+      const checkMultiWay = () => {
+        let wallsAround = 0;
+
+        if (isWallOrBoundary(newPosition.x, newPosition.y - 1)) wallsAround++; // up
+        if (isWallOrBoundary(newPosition.x, newPosition.y + 1)) wallsAround++; // down
+        if (isWallOrBoundary(newPosition.x - 1, newPosition.y)) wallsAround++; // left
+        if (isWallOrBoundary(newPosition.x + 1, newPosition.y)) wallsAround++; // right
+
+        // if (wallsAround <= 1) {
+        //   canMove = false;
+        // }
+        if (wallsAround <= 1) {
+          multiWay = true;
+        } else {
+          multiWay = false;
+        }
+      };
+
+      // checkMultiWay();
+
+      while (canMove && !multiWay) {
+        // !multiWay
+        const { x, y } = newPosition;
+
+        // Stop player if is on one of the goals
+        if (goals.some((goal) => goal.x === x && goal.y === y)) return;
+
+        if (direction === "up" && !isWallOrBoundary(x, y - 1)) {
+          newPosition.y -= 1;
+          checkMultiWay();
+        } else if (direction === "down" && !isWallOrBoundary(x, y + 1)) {
+          newPosition.y += 1;
+          checkMultiWay();
+        } else if (direction === "left" && !isWallOrBoundary(x - 1, y)) {
+          newPosition.x -= 1;
+          checkMultiWay();
+        } else if (direction === "right" && !isWallOrBoundary(x + 1, y)) {
+          newPosition.x += 1;
+          checkMultiWay();
+        } else {
+          canMove = false;
+        }
+
+        // Update player position if moving forward
+        if (canMove) {
+          setPlayer(newPosition);
+          setMoveCount((prevCount) => prevCount + 1);
+          socket.emit("playerMove", newPosition);
+        }
+
+        // Stop if the player encounters a wall, boundary, or goal
+        if (
+          isWallOrBoundary(newPosition.x, newPosition.y) ||
+          isGoalInFront(direction, newPosition.x, newPosition.y, goals)
+        ) {
+          canMove = false;
+        }
       }
-    };
-
-    // Stop at two ways
-    const checkMultiWay = () => {
-      let wallsAround = 0;
-
-      if (isWallOrBoundary(newPosition.x, newPosition.y - 1)) wallsAround++; // up
-      if (isWallOrBoundary(newPosition.x, newPosition.y + 1)) wallsAround++; // down
-      if (isWallOrBoundary(newPosition.x - 1, newPosition.y)) wallsAround++; // left
-      if (isWallOrBoundary(newPosition.x + 1, newPosition.y)) wallsAround++; // right
-
-      // if (wallsAround <= 1) {
-      //   canMove = false;
-      // }
-      if (wallsAround <= 1) {
-        multiWay = true;
-      } else {
-        multiWay = false;
-      }
-    };
-
-    // checkMultiWay();
-
-    while (canMove && !multiWay) {
-      // !multiWay
-      const { x, y } = newPosition;
-
-      // Stop player if is on one of the goals
-      if (goals.some((goal) => goal.x === x && goal.y === y)) return;
-
-      if (direction === "up" && !isWallOrBoundary(x, y - 1)) {
-        newPosition.y -= 1;
-        checkMultiWay();
-      } else if (direction === "down" && !isWallOrBoundary(x, y + 1)) {
-        newPosition.y += 1;
-        checkMultiWay();
-      } else if (direction === "left" && !isWallOrBoundary(x - 1, y)) {
-        newPosition.x -= 1;
-        checkMultiWay();
-      } else if (direction === "right" && !isWallOrBoundary(x + 1, y)) {
-        newPosition.x += 1;
-        checkMultiWay();
-      } else {
-        canMove = false;
-      }
-
-      // Update player position if moving forward
-      if (canMove) {
-        setPlayer(newPosition);
-        setMoveCount((prevCount) => prevCount + 1);
-        socket.emit("playerMove", newPosition);
-      }
-
-      // Stop if the player encounters a wall, boundary, or goal
-      if (
-        isWallOrBoundary(newPosition.x, newPosition.y) ||
-        isGoalInFront(direction, newPosition.x, newPosition.y, goals)
-      ) {
-        canMove = false;
-      }
-    }
-  };
+    },
+    [gameOver, goals, isGameStarted, maze, player]
+  );
 
   // Handling key events
   useEffect(() => {
@@ -311,7 +314,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [player, gameOver]);
+  }, [player, gameOver, handleAutoMove]);
 
   // Fade out effect of the Maze at beginning
   useEffect(() => {
