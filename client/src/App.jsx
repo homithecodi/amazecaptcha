@@ -68,9 +68,9 @@ function App() {
 
     socket.on("win", (msg) => {
       console.log("Received win message:", msg);
+      setIsGameStarted(false);
       setGameWon(true);
       setGameOver(true);
-      setIsGameStarted(false);
       setMessage(msg);
       setEndTime(Date.now());
       setBeepInterval(null); // Stop Beep Sound
