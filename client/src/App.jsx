@@ -151,6 +151,8 @@ function App() {
     setMessage("");
     setComment("");
     socket.emit("reset", { algorithm });
+    socket.disconnect();
+    socket.connect();
   };
 
   const startGame = () => {
