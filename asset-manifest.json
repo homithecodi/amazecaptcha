@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/amazecaptcha/static/css/main.3a2dcfb2.css",
-    "main.js": "/amazecaptcha/static/js/main.613145bb.js",
+    "main.js": "/amazecaptcha/static/js/main.ebe856af.js",
     "static/media/Roboto-Medium.ttf": "/amazecaptcha/static/media/Roboto-Medium.7c8d04cd831df3033c8a.ttf",
     "static/media/DancingScript-VariableFont_wght.ttf": "/amazecaptcha/static/media/DancingScript-VariableFont_wght.d02a1ee17643667e9808.ttf",
     "static/media/MonomaniacOne-Regular.ttf": "/amazecaptcha/static/media/MonomaniacOne-Regular.c1c20d5591017ea9ad5e.ttf",
@@ -10,10 +10,10 @@
     "static/media/sfx_movement_ladder5loop.mp3": "/amazecaptcha/static/media/sfx_movement_ladder5loop.2dc8f46ea1df2fd19b5e.mp3",
     "index.html": "/amazecaptcha/index.html",
     "main.3a2dcfb2.css.map": "/amazecaptcha/static/css/main.3a2dcfb2.css.map",
-    "main.613145bb.js.map": "/amazecaptcha/static/js/main.613145bb.js.map"
+    "main.ebe856af.js.map": "/amazecaptcha/static/js/main.ebe856af.js.map"
   },
   "entrypoints": [
     "static/css/main.3a2dcfb2.css",
-    "static/js/main.613145bb.js"
+    "static/js/main.ebe856af.js"
   ]
 }
