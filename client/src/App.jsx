@@ -5,16 +5,16 @@ import ResultScreen from "./components/ResultScreen";
 import AccessibilityButton from "./components/AccessibilityButton";
 import ControlButton from "./components/ControlButton";
 import styles from "./App.module.scss";
-import beepSound from "./audios/beep01.mp3";
+import beepSound from "./audios/sfx_movement_ladder5loop.mp3";
 import Icon from "./components/Icon";
 import Tutorial from "./components/Tutorial";
 import useGamepad from "./components/useGamepad";
 // import ThemeToggle from "./components/ThemeToggle";
 // import AlgorithmDropdown from "./components/AlgorithmDropdown";
 
-// const socket = io("http://localhost:3001");
+const socket = io("http://localhost:3001");
 // const socket = io("http://192.168.1.109:3001");
-const socket = io("https://amazecaptcha.liara.run/");
+// const socket = io("https://amazecaptcha.liara.run/");
 
 function App() {
   // STATES HERE
