@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import styles from "./ResultScreen.module.scss";
+import StarRating from "./StarRating";
 
 function ResultScreen({
   name,
@@ -18,6 +19,10 @@ function ResultScreen({
   handleSubmit,
   submitBtnDisabled,
   maze,
+  rating,
+  setRating,
+  hoverRating,
+  setHoverRating,
 }) {
   const resultRef = useRef(null);
   const mazeLength = maze.length - 1;
@@ -86,6 +91,18 @@ function ResultScreen({
             <option value="female">Female</option>
             <option value="other">Prefer not to say</option>
           </select>
+        </label>
+        <label className={styles.field}>
+          Rate:
+          <StarRating
+            rating={rating}
+            setRating={setRating}
+            hoverRating={hoverRating}
+            setHoverRating={setHoverRating}
+            icon={"⭐"}
+            size={3}
+          />
+          {/* <input type="text" value={`${timeTaken}s`} readOnly /> */}
         </label>
         <label className={styles.field}>
           Add a comment:

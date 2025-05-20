@@ -1,0 +1,19 @@
+.starsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  //  Adjust width
+  width: 60%;
+}
+.star {
+  margin: 0.2rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  filter: grayscale(100%);
+
+  &:hover {
+    filter: grayscale(0%);
+    transform: scale(1.1);
+  }
+}

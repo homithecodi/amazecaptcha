@@ -9,12 +9,13 @@ import beepSound from "./audios/sfx_movement_ladder5loop.mp3";
 import Icon from "./components/Icon";
 import Tutorial from "./components/Tutorial";
 import useGamepad from "./components/useGamepad";
+import StarRating from "./components/StarRating";
 // import ThemeToggle from "./components/ThemeToggle";
 // import AlgorithmDropdown from "./components/AlgorithmDropdown";
 
-// const socket = io("http://localhost:3001");
+const socket = io("http://localhost:3001");
 // const socket = io("http://192.168.1.109:3001");
-const socket = io("https://amazecaptcha.liara.run/");
+// const socket = io("https://amazecaptcha.liara.run/");
 
 function App() {
   // STATES HERE
@@ -42,6 +43,8 @@ function App() {
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const [device, setDevice] = useState("");
   const [gamepadConnected, setGamepadConnected] = useState(false);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [rating, setRating] = useState(1);
 
   // REFS HERE
   const startRef = useRef(null);
@@ -489,6 +492,10 @@ function App() {
           handleSubmit={handleSubmit}
           submitBtnDisabled={submitBtnDisabled}
           maze={maze}
+          rating={rating}
+          setRating={setRating}
+          hoverRating={hoverRating}
+          setHoverRating={setHoverRating}
         />
       )}
     </>
