@@ -9,7 +9,6 @@ import beepSound from "./audios/sfx_movement_ladder5loop.mp3";
 import Icon from "./components/Icon";
 import Tutorial from "./components/Tutorial";
 import useGamepad from "./components/useGamepad";
-import StarRating from "./components/StarRating";
 // import ThemeToggle from "./components/ThemeToggle";
 // import AlgorithmDropdown from "./components/AlgorithmDropdown";
 
@@ -45,6 +44,7 @@ function App() {
   const [gamepadConnected, setGamepadConnected] = useState(false);
   const [hoverRating, setHoverRating] = useState(0);
   const [rating, setRating] = useState(1);
+  const [retries, setRetries] = useState(0);
 
   // REFS HERE
   const startRef = useRef(null);
@@ -92,6 +92,7 @@ function App() {
       setBeepInterval(null); // Stop Beep Sound
       setVibrationPattern([]); // Stop vibration
       setPulseInterval(null); // Stop pulse
+      setRetries(retries + 1);
       if (navigator.vibrate) {
         navigator.vibrate(0); // Stop any ongoing vibrations
       }
@@ -122,7 +123,7 @@ function App() {
         navigator.vibrate(0); // Stop any ongoing vibrations
       }
     });
-  }, []);
+  }, [retries]);
 
   // Sending data to server after game won!
   const handleSubmit = (event) => {
@@ -136,6 +137,8 @@ function App() {
       moveCount,
       timeTaken,
       comment,
+      retries,
+      rating,
     };
     socket.emit("submit-test", data);
     setSubmitBtnDisabled(true);
@@ -156,6 +159,10 @@ function App() {
     socket.emit("reset", { algorithm });
     socket.disconnect();
     socket.connect();
+
+    if (gameWon) {
+      setRetries(0);
+    }
   };
 
   const startGame = () => {
@@ -496,6 +503,7 @@ function App() {
           setRating={setRating}
           hoverRating={hoverRating}
           setHoverRating={setHoverRating}
+          retries={retries}
         />
       )}
     </>

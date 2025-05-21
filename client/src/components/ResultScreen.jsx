@@ -23,6 +23,7 @@ function ResultScreen({
   setRating,
   hoverRating,
   setHoverRating,
+  retries,
 }) {
   const resultRef = useRef(null);
   const mazeLength = maze.length - 1;
@@ -47,6 +48,10 @@ function ResultScreen({
         <label className={styles.field}>
           Maze Size:
           <input type="text" value={`${mazeLength}x${mazeLength}`} readOnly />
+        </label>
+        <label className={styles.field}>
+          No. of Retries:
+          <input type="text" value={`${retries}`} readOnly />
         </label>
         <label className={styles.field}>
           No. of Moves:
@@ -100,6 +105,7 @@ function ResultScreen({
             hoverRating={hoverRating}
             setHoverRating={setHoverRating}
             icon={"⭐"}
+            count={5}
             size={3}
           />
           {/* <input type="text" value={`${timeTaken}s`} readOnly /> */}
