@@ -323,7 +323,7 @@ io.on("connection", (socket) => {
     const client = await pool.connect();
     try {
       const res = await client.query(
-        "INSERT INTO maze_results (name, age, gender, time, date, maze_size, algorithm, move_count, comment) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+        "INSERT INTO maze_results (name, age, gender, time, date, maze_size, algorithm, move_count, comment, retries, rating) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, %10, %11)",
         [
           data.name,
           data.age,
@@ -334,6 +334,8 @@ io.on("connection", (socket) => {
           data.algorithm,
           data.moveCount,
           data.comment,
+          data.retries,
+          data.rating,
         ]
       );
       console.log("Data inserted:", res.rows);

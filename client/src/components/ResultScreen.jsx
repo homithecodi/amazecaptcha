@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./ResultScreen.module.scss";
 import StarRating from "./StarRating";
 
@@ -29,11 +29,13 @@ function ResultScreen({
   const mazeLength = maze.length - 1;
   // const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
 
-  if (resultRef.current) {
-    setTimeout(() => {
-      resultRef.current.classList.remove(styles.hide);
-    }, 500);
-  }
+  useEffect(() => {
+    if (resultRef) {
+      setTimeout(() => {
+        resultRef.current.classList.remove(styles.hide);
+      }, 500);
+    }
+  }, [resultRef]);
 
   return (
     <div ref={resultRef} className={`${styles.results} ${styles.hide}`}>

@@ -123,7 +123,7 @@ function App() {
         navigator.vibrate(0); // Stop any ongoing vibrations
       }
     });
-  }, [retries]);
+  }, [retries, gameWon]);
 
   // Sending data to server after game won!
   const handleSubmit = (event) => {
